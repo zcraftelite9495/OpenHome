@@ -12,7 +12,7 @@ import { OHPKM } from 'src/types/pkm/OHPKM'
 import { PathData, PossibleSaves } from 'src/types/SAVTypes/path'
 import { SaveFolder, StoredBoxData } from 'src/types/storage'
 import { Errorable, JSONObject, LoadSaveResponse, LookupMap, SaveRef } from 'src/types/types'
-import { defaultSettings, Settings } from '../../state/appInfo'
+import { Bag, defaultSettings, Settings } from '../../state/appInfo'
 import { TauriInvoker } from './tauriInvoker'
 
 async function pathDataFromRaw(raw: string): Promise<PathData> {
@@ -325,5 +325,20 @@ export const TauriBackend: BackendInterface = {
           unlistenFunction()
         }
       })
+  },
+
+  getBag: async (): Promise<Errorable<Bag>> => {
+    const result = await (TauriInvoker.getStorageFileJSON('bag.json') as Promise<Errorable<Bag>>)
+
+    // If the file doesn't exist or there's an error, return an empty bag
+    if (E.isLeft(result)) {
+      return E.right({})
+    }
+
+    return result
+  },
+
+  updateBag: async (bag: Bag): Promise<Errorable<null>> => {
+    return TauriInvoker.writeStorageFileJSON('bag.json', bag)
   },
 }

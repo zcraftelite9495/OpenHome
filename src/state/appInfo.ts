@@ -40,6 +40,13 @@ export const defaultSettings: Settings = {
   appTheme: 'system',
 }
 
+export type BagItem = {
+  name: string
+  quantity: number
+}
+
+export type Bag = Record<string, number>
+
 export type Settings = {
   enabledSaveTypes: Record<string, boolean>
   enabledPlugins: Record<string, boolean>
@@ -53,6 +60,7 @@ export type AppInfoState = {
   settingsLoaded: boolean
   officialSaveTypes: SAVClass[]
   extraSaveTypes: SAVClass[]
+  bag: Bag
 }
 
 export type AppInfoAction =
@@ -85,6 +93,18 @@ export type AppInfoAction =
   | {
       type: 'set_app_theme'
       payload: 'light' | 'dark' | 'system'
+    }
+  | {
+      type: 'add_to_bag' // Add item to bag
+      payload: BagItem
+    }
+  | {
+      type: 'remove_from_bag' // Remove item from bag
+      payload: string // Item ID
+    }
+  | {
+      type: 'update_bag_item' // Update an item in the bag
+      payload: BagItem
     }
 
 export const appInfoReducer: Reducer<AppInfoState, AppInfoAction> = (
@@ -139,6 +159,24 @@ export const appInfoReducer: Reducer<AppInfoState, AppInfoAction> = (
     case 'set_app_theme': {
       return { ...state, settings: { ...state.settings, appTheme: payload } }
     }
+    case 'add_to_bag': {
+      const { name, quantity } = payload
+      return {
+        ...state,
+        bag: { ...state.bag, [name]: (state.bag[name] || 0) + quantity },
+      }
+    }
+    case 'remove_from_bag': {
+      const { [payload]: _, ...rest } = state.bag
+      return { ...state, bag: rest }
+    }
+    case 'update_bag_item': {
+      const { name, quantity } = payload
+      return {
+        ...state,
+        bag: { ...state.bag, [name]: quantity },
+      }
+    }
   }
 }
 
@@ -160,6 +198,7 @@ export const appInfoInitialState: AppInfoState = {
     USUMSAV,
   ],
   extraSaveTypes: [G3RRSAV, G3UBSAV],
+  bag: {},
 }
 
 export const AppInfoContext = createContext<

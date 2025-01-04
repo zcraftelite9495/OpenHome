@@ -1,4 +1,16 @@
-import { Box, Modal, ModalDialog, ModalOverflow, Stack, useTheme } from '@mui/joy'
+import {
+  Box,
+  Card,
+  Modal,
+  ModalDialog,
+  ModalOverflow,
+  Stack,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  useTheme,
+} from '@mui/joy'
 import * as E from 'fp-ts/lib/Either'
 import lodash, { flatten } from 'lodash'
 import { bytesToPKMInterface } from 'pokemon-files'
@@ -11,6 +23,7 @@ import { BackendContext } from '../backend/backendContext'
 import FilterPanel from '../components/filter/FilterPanel'
 import useDisplayError from '../hooks/displayError'
 import PokemonDetailsPanel from '../pokemon/PokemonDetailsPanel'
+import BagBox from '../saves/BagBox'
 import HomeBoxDisplay from '../saves/boxes/HomeBoxDisplay'
 import OpenSaveDisplay from '../saves/boxes/SaveBoxDisplay'
 import SavesModal from '../saves/SavesModal'
@@ -31,6 +44,7 @@ const Home = () => {
   const [tab, setTab] = useState('summary')
   const [openSaveDialog, setOpenSaveDialog] = useState(false)
   const displayError = useDisplayError()
+  const [activeTab, setActiveTab] = useState(0)
 
   const previewFile = useCallback(
     async (file: File) => {
@@ -269,7 +283,35 @@ const Home = () => {
         </Box>
       </div>
       <Stack spacing={1} className="right-column" width={300}>
-        <FilterPanel />
+        <Card sx={{ padding: 0, overflow: 'hidden' }}>
+          <Tabs
+            value={activeTab}
+            onChange={(_, newValue) => {
+              if (typeof newValue === 'number') {
+                setActiveTab(newValue)
+              }
+            }}
+          >
+            <TabList>
+              <Tab>Filter</Tab>
+              <Tab>Bag</Tab>
+            </TabList>
+
+            <TabPanel value={0} sx={{ padding: 0 }}>
+              <FilterPanel />
+            </TabPanel>
+
+            <TabPanel value={1} sx={{ padding: 0 }}>
+              <BagBox
+              // removeItemFromPokemon={removeItemFromPokemon}
+              // draggedMon={draggedMon}
+              // setDraggedItem={setDraggedItem}
+              // items={bagItems}
+              // updateBag={updateBag}
+              />
+            </TabPanel>
+          </Tabs>
+        </Card>{' '}
         <div
           className="drop-area"
           onDrop={(e) => e.dataTransfer.files.length && previewFile(e.dataTransfer.files[0])}

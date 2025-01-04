@@ -93,6 +93,13 @@ function AppWithBackend() {
   }, [backend])
 
   useEffect(() => {
+    // Update bag.json whenever the bag state changes
+    TauriBackend.updateBag(appInfoState.bag).catch((err) =>
+      console.error('Failed to update bag.json:', err)
+    )
+  }, [appInfoState.bag])
+
+  useEffect(() => {
     if (!appInfoState.settingsLoaded) return
     debouncedUpdateSettings(backend, appInfoState.settings)
   }, [backend, appInfoState.settings, appInfoState.settingsLoaded])

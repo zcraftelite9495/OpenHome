@@ -1,4 +1,4 @@
-import { Settings } from '../state/appInfo'
+import { Bag, Settings } from '../state/appInfo'
 import { OHPKM } from '../types/pkm/OHPKM'
 import { PathData, PossibleSaves } from '../types/SAVTypes/path'
 import { SaveFolder, StoredBoxData } from '../types/storage'
@@ -74,6 +74,10 @@ export default interface BackendInterface {
   downloadPlugin(remoteUrl: string): Promise<Errorable<string>>
   loadPluginCode(pluginId: string): Promise<Errorable<string>>
   deletePlugin(pluginId: string): Promise<Errorable<string>>
+
+  /* bag */
+  getBag: () => Promise<Errorable<Bag>>
+  updateBag: (bag: Bag) => Promise<Errorable<null>>
 }
 
 export interface BackendListeners {
