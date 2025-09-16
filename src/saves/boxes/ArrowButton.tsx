@@ -6,6 +6,7 @@ import DroppableSpace from './DroppableSpace'
 
 interface OpenHomeButtonProps {
   onClick?: (e?: any) => void
+  disabled?: boolean
   style?: CSSProperties
   dragID?: string
   direction: 'left' | 'right'
@@ -13,7 +14,7 @@ interface OpenHomeButtonProps {
 const DRAG_OVER_COOLDOWN_MS = 500
 
 const ArrowButton = (props: OpenHomeButtonProps) => {
-  const { dragID, onClick, direction, style } = props
+  const { onClick, disabled, style, dragID, direction } = props
   const [timer, setTimer] = useState<NodeJS.Timeout>()
   const onClickRef = useRef(onClick)
 
@@ -40,7 +41,13 @@ const ArrowButton = (props: OpenHomeButtonProps) => {
   }, [timer])
 
   return (
-    <Button className="arrow-button" onClick={onClick} variant="soft" style={style}>
+    <Button
+      className="arrow-button"
+      onClick={onClick}
+      variant="soft"
+      style={style}
+      disabled={disabled}
+    >
       <DroppableSpace dropID={`${dragID}-drop`} onOver={onDragOver} onNotOver={onNotDragOver}>
         {direction === 'left' ? <ArrowLeftIcon /> : <ArrowRightIcon />}
       </DroppableSpace>

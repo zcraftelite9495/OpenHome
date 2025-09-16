@@ -40,7 +40,7 @@ const DraggableMon = ({ mon, onClick, disabled, dragData, dragID }: DraggableMon
       dragState.payload &&
       dragData &&
       dragState.payload.box === dragData.box &&
-      dragState.payload.boxPos === dragData.boxPos &&
+      dragState.payload.box_slot === dragData.box_slot &&
       dragState.payload.save === dragData.save,
     [dragData, dragState.payload]
   )
