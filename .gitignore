@@ -39,3 +39,12 @@ src/consts/JSON/version.json
 src-tauri/gen
 src-tauri/target
 target/
+
+# Code editors
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+*.wakatime-project
+
+# Custom gitignore
+.gitignore
