@@ -27,7 +27,6 @@ While we do our best to avoid glitches, it's always a good idea to back up your 
 <img width="200" src="docs/newScreenshots/PkmnOldSprite.png">
 <img width="200" src="docs/newScreenshots/PkmnMoves.png">
 <img width="200" src="docs/newScreenshots/PkmnStats.png">
-<img width="200" src="docs/newScreenshots/PkmnSummary.png">
 <img width="200" src="docs/newScreenshots/PkmnRibbon.png">
 <img width="200" src="docs/newScreenshots/PkmnOther.png">
 
